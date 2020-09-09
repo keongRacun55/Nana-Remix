@@ -57,7 +57,12 @@ async def kang_stickers(client, message):
             await client.download_media(message.reply_to_message.sticker, file_name="nana/cache/sticker.png")
     elif message.reply_to_message and message.reply_to_message.photo:
         await client.download_media(message.reply_to_message.photo, file_name="nana/cache/sticker.png")
-    elif message.reply_to_message and message.reply_to_message.document and (message.reply_to_message.document.mime_type == "image/png" or message.reply_to_message.document.mime_type == "image/jpeg"):
+    elif (
+        message.reply_to_message
+        and message.reply_to_message.document
+        and message.reply_to_message.document.mime_type
+        in ["image/png", "image/jpeg"]
+    ):
         await client.download_media(message.reply_to_message.document, file_name="nana/cache/sticker.png")
     else:
         await edrep(message, text="Reply a sticker or photo to kang it!\nCurrent sticker pack is: {}\nCurrent animation pack is: {}".format(

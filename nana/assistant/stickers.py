@@ -76,12 +76,10 @@ async def set_stickers(client, message):
         elif USER_SET["type"] == 2:
             set_stanim_set(message.from_user.id, message.text)
         status = "Ok, sticker was set to `{}`".format(message.text)
-        TEMP_KEYBOARD = []
-        USER_SET = {}
     else:
         status = "Invalid pack selected."
-        TEMP_KEYBOARD = []
-        USER_SET = {}
+    TEMP_KEYBOARD = []
+    USER_SET = {}
     text = await get_text_settings()
     text += "\n{}".format(status)
     button = await get_button_settings()
