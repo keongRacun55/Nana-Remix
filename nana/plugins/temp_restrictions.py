@@ -23,7 +23,7 @@ Temporarily ban a user with given time: `tban @dank_as_fuck 69m`
 
 @app.on_message(filters.command('tmute') & filters.user(AdminSettings))
 @capture_err
-async def tempmute(client, message, chat, is_connected):
+async def tempmute(client, message):
     if message.chat.type == 'private':
         await message.delete()
         return
