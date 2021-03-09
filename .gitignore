@@ -124,3 +124,5 @@ nana/modules/test_admin.py
 config.ini
 *.ttf
 *.jpg
+*.log
+nana/downloads/*
