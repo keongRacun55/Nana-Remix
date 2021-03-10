@@ -17,6 +17,7 @@ from nana import REPOSITORY
 from nana.__main__ import except_hook
 from nana.__main__ import restart_all
 from nana.plugins.assistant.updater import update_changelog
+from nana.utils.capture_errors import capture_err
 
 __MODULE__ = 'Updater'
 __HELP__ = """
@@ -68,6 +69,7 @@ async def initial_git(repo):
     filters.user(AdminSettings) &
     filters.command('update', COMMAND_PREFIXES),
 )
+@capture_err
 async def updater(client, message):
     initial = False
     try:
