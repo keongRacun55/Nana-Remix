@@ -73,7 +73,11 @@ async def kang_stickers(client, message):
             return
         sticker_pack = sticker_pack.sticker
         if message.reply_to_message and message.reply_to_message.sticker:
-            doc_mime = message.reply_to_message.sticker.mime_type
+            doc_mime = (
+                message.reply_to_message.sticker.mime_type
+                or message.reply_to_message.photo.mime_type
+                or message.reply_to_message.document.mime_type
+            )
             if doc_mime == 'application/x-tgsticker':
                 if not animation_pack:
                     await edit_or_reply(
@@ -147,12 +151,16 @@ async def kang_stickers(client, message):
                 maxsize = (512, 512)
                 im.thumbnail(maxsize)
             im.save('nana/cache/sticker.png', 'PNG')
-        mime_type = message.reply_to_message.sticker.mime_type
+        mime_type = (
+            message.reply_to_message.sticker
+            or message.reply_to_message.photo
+            or message.reply_to_message.document
+        )
         await client.send_message('@Stickers', '/addsticker')
         time.sleep(0.2)
         if (
             message.reply_to_message.sticker
-            and mime_type == 'application/x-tgsticker'
+            and mime_type.mime_type == 'application/x-tgsticker'
         ):
             await client.send_message('@Stickers', animation_pack.sticker)
         else:
@@ -190,7 +198,7 @@ async def kang_stickers(client, message):
         await client.send_message('@Stickers', '/done')
         if (
             message.reply_to_message.sticker
-            and mime_type == 'application/x-tgsticker'
+            and mime_type.mime_type == 'application/x-tgsticker'
         ):
             await edit_or_reply(
                 message,

@@ -36,6 +36,8 @@ BLACKLIST = ['hack', 'fuck', 'bitch', 'pubg', 'sex', 'bitcoin']
 
 @app.on_message(~filters.me & filters.private & ~filters.bot)
 async def pm_block(client, message):
+    if message.service:
+        return
     if not PM_PERMIT:
         return
     if message.chat.id in AdminSettings:
@@ -97,7 +99,7 @@ async def revoke_pm_block(_, message):
         if message.reply_to_message:
             del_whitelist(message.reply_to_message.from_user.id)
         else:
-            message.delete()
+            await message.delete()
             return
     await message.edit('**PM permission revoked!**')
     await asyncio.sleep(3)
@@ -114,7 +116,6 @@ pm_filter = filters.create(pm_button_callback)
 
 @setbot.on_callback_query(pm_filter)
 async def pm_button(client, query):
-    print(query)
     if not PM_PERMIT:
         return
     if (
@@ -130,9 +131,8 @@ async def pm_button(client, query):
         await app.send_sticker(
             query.from_user.id, sticker='CAADAgAD1QQAAp7kTAry1JrL3zVXSxYE',
         )
-        await setbot.edit_inline_text(
-            query.from_user.id,
-            'Sorry, no cash for today.\nGoodbye!',
+        await query.answer(
+            'Sorry, no cash for today.\nGoodbye!', show_alert=True
         )
         await app.block_user(query.from_user.id)
     elif re.match('engine_pm_nope', query.data):
@@ -179,16 +179,15 @@ async def pm_button(client, query):
         target = query.data.split('-')[1]
         await query.message.edit_text(f'[Approved to PM]({target})')
         await app.send_message(
-            target, 'Hello, this is **Nana**, my master approved you to PM.',
+            target, 'Hello, you are approved you to PM.',
         )
         set_whitelist(int(target), True)
     elif re.match(r'engine_pm_blk', query.data):
-        target = query.data.split('-')[1]
         await query.message.edit_text('That user was blocked ~')
         await app.send_message(
-            target,
+            query.from_user.id,
             'Hello, you have been blocked.\nSorry about this!',
         )
-        await app.block_user(target)
+        await app.block_user(query.from_user.id)
     else:
         await setbot.edit_inline_text(query.inline_message_id, '🙆‍')
