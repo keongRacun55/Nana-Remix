@@ -6,7 +6,6 @@ coffeehouse==2.2.2
 currencyconverter
 emoji==0.5.4
 ffmpeg-python
-youtube-dl
 gitpython
 gpytranslate
 gtts==2.2.1
@@ -46,3 +45,4 @@ typing==3.7.4.1
 ujson==4.0.1
 uptime
 wheel
+youtube-dl

@@ -132,7 +132,7 @@ async def pm_button(client, query):
             query.from_user.id, sticker='CAADAgAD1QQAAp7kTAry1JrL3zVXSxYE',
         )
         await query.answer(
-            'Sorry, no cash for today.\nGoodbye!', show_alert=True
+            'Sorry, no cash for today.\nGoodbye!', show_alert=True,
         )
         await app.block_user(query.from_user.id)
     elif re.match('engine_pm_nope', query.data):
